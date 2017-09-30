@@ -1,0 +1,26 @@
+---
+
+- name: Configuring shares in smb.conf
+  blockinfile:
+    dest: /etc/samba/smb.conf
+    block: |
+      [{{ item.name }}]
+              path = {{ item.unixpath }}
+              writeable = {% if item.writeable %}yes{% else %}no{% endif %}
+
+      ;       browseable = yes
+              guest ok = {% if item.guest %}yes{% else %}no{% endif %}
+    backup: yes
+    validate: "testparm -s %s"
+  with_items: "{{ fileserver_samba_shares }}"
+  notify:
+    - reload smbd
+    - reload smb redhat
+
+- name: check Samba User(s) exists on local system
+  user: name={{ item.name }}
+  with_items: "{{ fileserver_samba_users }}"
+
+- name: Create Samba Password for User(s)
+  shell: "(echo {{ item.pass }}; echo {{ item.pass }}) | smbpasswd -s -a {{ item.name }}"
+  with_items: "{{ fileserver_samba_users }}"

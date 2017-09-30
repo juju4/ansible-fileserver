@@ -1,0 +1,20 @@
+---
+- name: restart portmap
+  service: name=portmap state=restarted
+
+- name: reload nfs-kernel-server
+  service: name=nfs-kernel-server state=reloaded
+  when: ansible_os_family == 'Debian'
+
+- name: reload nfs redhat
+  service: name=nfs state=reloaded
+  when: ansible_os_family == "RedHat" and not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
+
+- name: reload smbd
+  service: name=smbd state=reloaded
+  when: ansible_os_family == 'Debian'
+
+- name: reload smb redhat
+  service: name=smb state=reloaded
+  when: ansible_os_family == "RedHat" and not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
+

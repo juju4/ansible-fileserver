@@ -1,0 +1,52 @@
+---
+## https://wiki.debian.org/NFSServerSetup
+## https://help.ubuntu.com/community/SettingUpNFSHowTo
+
+## Note: doesn't seem to be necessary anymore
+#- shell: "egrep '^NFSD' /boot/config-`uname -r`"
+#  register: nfsdkernel
+#  changed_when: false
+#  failed_when: false
+#  when: (servertype is defined and servertype == 'nfs')
+#- fail: msg="Error! missing nfsd into kernel."
+#  when: nfsdkernel.stdout.find("CONFIG_NFSD") != -1 and (servertype is defined and servertype == 'nfs')
+
+- block:
+    - name: Debian | nfs file server packages install
+      apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+      with_items:
+        - nfs-common
+        - nfs-kernel-server
+    #    - portmap  ## replaced by rpcbind
+        - rpcbind
+      when: (servertype is defined and servertype == 'nfs')
+    
+    #- name: Debian | Remove localhost restriction
+    #  lineinfile:
+    #    dest='/etc/default/portmap' regexp='^OPTIONS' line='#OPTIONS'
+    #  when: (servertype is defined and servertype == 'nfs')
+    #  notify:
+    #    - restart portmap
+    
+    - name: Ensure appropriate services are enabled
+      service: name="{{ item }}" state=started enabled=yes
+      with_items:
+        - rpcbind
+        - nfs-kernel-server
+  when: (servertype is defined and servertype == 'nfs')
+
+
+## https://wiki.debian.org/SambaServerSimple
+
+- block:
+    - name: Debian | samba file server packages install
+      apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+      with_items:
+        - samba
+        - samba-common
+    - name: Debian | Ensure services are running and enabled on boot.
+      service: name={{ item }} state=started enabled=yes
+      with_items:
+        - samba
+      ignore_errors: true
+  when: (servertype is defined and servertype == 'smb')

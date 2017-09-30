@@ -1,0 +1,24 @@
+---
+galaxy_info:
+  author: juju4
+  description: setup a file server either through nfs, either through samba
+  license: BSD
+  min_ansible_version: 1.9
+  #
+  # Below are all platforms currently available. Just uncomment
+  # the ones that apply to your role. If you don't see your
+  # platform on this list, let us know and we'll get it added!
+  #
+  platforms:
+  - name: EL
+    versions:
+     - 7
+     - 6
+  - name: Ubuntu
+    versions:
+    - xenial
+    - trusty
+    - precise
+  galaxy_tags:
+  - system
+dependencies: []

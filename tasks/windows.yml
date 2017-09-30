@@ -1,0 +1,4 @@
+---
+- name: Create temp dir
+  win_file: path='C:\temp' state=directory
+

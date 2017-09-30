@@ -1,0 +1,25 @@
+---
+
+- block:
+    - name: RedHat | nfs file server packages install
+      yum: name={{item}} state=present
+      with_items:
+        - nfs-utils
+    - name: Redhat | Ensure services are running and enabled on boot.
+      service: name=nfs-server state=started enabled=yes
+      when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
+  when: (servertype is defined and servertype == 'nfs')
+
+- block:
+    - name: RedHat | samba file server packages install
+      yum: name={{item}} state=present
+      with_items:
+        - samba
+        - samba-common
+    - name: Redhat | Ensure services are running and enabled on boot.
+      service: name={{ item }} state=started enabled=yes
+      with_items:
+        - smb
+        - nmb
+      when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
+  when: (servertype is defined and servertype == 'smb')

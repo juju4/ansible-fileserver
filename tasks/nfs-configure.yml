@@ -1,0 +1,44 @@
+---
+
+- name: Remove localhost restriction in /etc/hosts.allow
+  lineinfile:
+    dest: "/etc/hosts.allow"
+    regexp: "^rpcbind "
+    line: "rpcbind mountd nfsd statd lockd rquotad : 127.0.0.1, {{ fileserver_portmap_subnet }}"
+    backup: yes
+- name: Ensures restriction in /etc/hosts.deny
+  lineinfile:
+    dest: "/etc/hosts.deny"
+    regexp: "^rpcbind "
+    line: "rpcbind mountd nfsd statd lockd rquotad : ALL"
+    backup: yes
+
+- name: Configure NFS server
+  lineinfile:
+    dest: '/etc/exports'
+    regexp: "^{{ item.unixpath }}"
+    line: "{{ item.unixpath }} {{ item.target }}({{ item.fsopt }})"
+    backup: yes
+  with_items: "{{ fileserver_nfs_shares }}"
+  notify:
+    - reload nfs-kernel-server
+    - reload nfs redhat
+
+## Note: those commands may work only after notify/services reload, so we flush
+- meta: flush_handlers
+
+- block:
+    - name: Check rpcinfo status
+      command: "rpcinfo -p"
+      register: rpcinfop
+      changed_when: false
+
+    - debug: msg="{{ rpcinfop.stdout }}"
+
+    - name: Check showmount status"
+      command: "showmount -e"
+      register: showmount
+      changed_when: false
+
+    - debug: msg="{{ showmount.stdout }}"
+  when: not (ansible_virtualization_type is defined and (ansible_virtualization_type == "docker"))

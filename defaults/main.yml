@@ -1,0 +1,23 @@
+---
+#servertype: smb
+servertype: nfs
+
+# for /etc/exports
+fileserver_nfs_shares:
+    - { unixpath: /opt/share, fsopt: rw,all_squash,subtree_check, target: '192.168.200.0/255.255.255.0' }
+#fsopt: ro
+
+#?quota
+#?fsflags
+
+## NFS options
+# for /etc/hosts.allow
+fileserver_portmap_subnet: 192.168.200.
+
+## SMB options
+## reminder: samba users must exists locally as unix user first and samba guest user must exist
+fileserver_samba_shares:
+  - { name: 'share', unixpath: '/share', writeable: true, guest: true }
+
+fileserver_samba_users:
+    - { name: youruser, pass: yourpass_you_have_to_change }

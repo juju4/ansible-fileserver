@@ -1,0 +1,9 @@
+---
+
+- hosts: all
+#- hosts: test-kitchen
+  vars:
+    - fileserver_samba_shares: []
+  roles:
+    - juju4.fileserver
+
