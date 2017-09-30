@@ -69,4 +69,3 @@ $ lxc config set default-centos-7-1472172303 security.privileged true
 ## License
 
 BSD 2-clause
-
