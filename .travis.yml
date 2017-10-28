@@ -3,13 +3,14 @@
 sudo: required
 
 env:
-  - distribution: centos
-    version: 6
-    init: /sbin/init
-    run_opts: ""
-    suite: default
-    ansible_version: 2.3.2.0
-    cryptography_version: 2.0.3
+# last working https://travis-ci.org/juju4/ansible-fileserver/jobs/289719255
+#  - distribution: centos
+#    version: 6
+#    init: /sbin/init
+#    run_opts: ""
+#    suite: default
+#    ansible_version: 2.4.0.0
+#    cryptography_version: 2.1.1
   - distribution: centos
     version: 7
     init: /usr/lib/systemd/systemd
