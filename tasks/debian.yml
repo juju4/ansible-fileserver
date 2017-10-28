@@ -20,14 +20,14 @@
     #    - portmap  ## replaced by rpcbind
         - rpcbind
       when: (servertype is defined and servertype == 'nfs')
-    
+
     #- name: Debian | Remove localhost restriction
     #  lineinfile:
     #    dest='/etc/default/portmap' regexp='^OPTIONS' line='#OPTIONS'
     #  when: (servertype is defined and servertype == 'nfs')
     #  notify:
     #    - restart portmap
-    
+
     - name: Ensure appropriate services are enabled
       service: name="{{ item }}" state=started enabled=yes
       with_items:
