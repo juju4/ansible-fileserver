@@ -41,14 +41,14 @@ env:
     version: 7
     init: /usr/lib/systemd/systemd
     run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
-    suite: default-nfs
+    suite: smb
     ansible_version: 2.4.0.0
     cryptography_version: 2.1.1
   - distribution: ubuntu
     version: 16.04
     init: /lib/systemd/systemd
     run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
-    suite: default-nfs
+    suite: smb
     ansible_version: 2.4.0.0
     cryptography_version: 2.1.1
 ## past ansible versions
