@@ -45,7 +45,3 @@ suites:
       - ubuntu-16.04
       - ubuntu-14.04
       - centos-7
-    provisioner:
-      name: ansible_playbook
-      playbook: test/integration/smb/smb.yml
-
