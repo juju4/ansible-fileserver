@@ -1,6 +1,7 @@
 ---
 
-## this directory need to be accessible to your user, most probably nobody (nfs squash or samba if using this account) or world writeable
+## this directory need to be accessible to your user, most probably nobody
+##  (nfs squash or samba if using this account) or world writeable
 - name: Ensure shared path directories exist
   file:
     dest: "{{ item.unixpath }}"
@@ -9,15 +10,21 @@
     owner: nobody
   with_items: "{{ fileserver_samba_shares + fileserver_nfs_shares }}"
 
-## failed: [localhost] (item=nfs-kernel-server) => {"failed": true, "item": "nfs-kernel-server", "msg": "mount: block device nfsd is write-protected, mounting read-only\nmount: cannot mount block device nfsd read-only\nrpc.nfsd: Unable to access /proc/fs/nfsd errno 2 (No such file or directory).\nPlease try, as root, 'mount -t nfsd nfsd /proc/fs/nfsd' and then restart rpc.nfsd to correct the problem\n"}
+## failed: [localhost] (item=nfs-kernel-server) => {"failed": true, "item":
+##  "nfs-kernel-server", "msg": "mount: block device nfsd is write-protected, mounting
+##  read-only\nmount: cannot mount block device nfsd read-only\nrpc.nfsd: Unable to access
+##  /proc/fs/nfsd errno 2 (No such file or directory).\nPlease try, as root,
+##  'mount -t nfsd nfsd /proc/fs/nfsd' and then restart rpc.nfsd to correct the problem\n"}
 - mount: name=/proc/fs/nfsd src=nfsd fstype=nfsd state=mounted
-  when: (servertype is defined and servertype == 'nfs') and not (ansible_virtualization_type is defined and (ansible_virtualization_type == "docker"))
+  when: >
+    (servertype is defined and servertype == 'nfs') and
+    not (ansible_virtualization_type is defined and (ansible_virtualization_type == "docker"))
 
 - include: debian.yml
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - include: redhat.yml
-  when: ansible_os_family == "RedHat" or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_os_family == "RedHat"
 
 - include: windows.yml
   when: ansible_distribution == 'Windows'

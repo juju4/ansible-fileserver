@@ -4,7 +4,7 @@ servertype: nfs
 
 # for /etc/exports
 fileserver_nfs_shares:
-    - { unixpath: /opt/share, fsopt: rw,all_squash,subtree_check, target: '192.168.200.0/255.255.255.0' }
+    - { unixpath: /opt/share, fsopt: 'rw,all_squash,subtree_check', target: '192.168.200.0/255.255.255.0' }
 #fsopt: ro
 
 #?quota

@@ -6,4 +6,3 @@
     - fileserver_samba_shares: []
   roles:
     - juju4.fileserver
-

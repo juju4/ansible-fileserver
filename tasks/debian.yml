@@ -13,7 +13,7 @@
 
 - block:
     - name: Debian | nfs file server packages install
-      apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+      apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
       with_items:
         - nfs-common
         - nfs-kernel-server
@@ -35,12 +35,10 @@
         - nfs-kernel-server
   when: (servertype is defined and servertype == 'nfs')
 
-
 ## https://wiki.debian.org/SambaServerSimple
-
 - block:
     - name: Debian | samba file server packages install
-      apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+      apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
       with_items:
         - samba
         - samba-common

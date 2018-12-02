@@ -2,7 +2,7 @@
 
 - block:
     - name: RedHat | nfs file server packages install
-      yum: name={{item}} state=present
+      yum: name={{ item }} state=present
       with_items:
         - nfs-utils
     - name: Redhat | Ensure services are running and enabled on boot.
@@ -12,7 +12,7 @@
 
 - block:
     - name: RedHat | samba file server packages install
-      yum: name={{item}} state=present
+      yum: name={{ item }} state=present
       with_items:
         - samba
         - samba-common

@@ -6,4 +6,3 @@
     - fileserver_nfs_shares: []
   roles:
     - juju4.fileserver
-

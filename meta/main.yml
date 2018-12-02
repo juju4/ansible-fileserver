@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: fileserver
   author: juju4
   description: setup a file server either through nfs, either through samba
   license: BSD
