@@ -15,7 +15,8 @@
 ##  read-only\nmount: cannot mount block device nfsd read-only\nrpc.nfsd: Unable to access
 ##  /proc/fs/nfsd errno 2 (No such file or directory).\nPlease try, as root,
 ##  'mount -t nfsd nfsd /proc/fs/nfsd' and then restart rpc.nfsd to correct the problem\n"}
-- mount: name=/proc/fs/nfsd src=nfsd fstype=nfsd state=mounted
+- name: Mount /proc/fs/nfsd
+  mount: name=/proc/fs/nfsd src=nfsd fstype=nfsd state=mounted
   when: >
     (servertype is defined and servertype == 'nfs') and
     not (ansible_virtualization_type is defined and (ansible_virtualization_type == "docker"))
