@@ -1,0 +1,36 @@
+---
+language: python
+services: docker
+
+env:
+  global:
+    - MOLECULE_NO_LOG: "false"
+  matrix:
+    - MOLECULE_DISTRO: centos:8
+      SUITE: default
+    - MOLECULE_DISTRO: centos:7
+      SUITE: default
+    - MOLECULE_DISTRO: ubuntu:20.04
+      SUITE: default
+    - MOLECULE_DISTRO: ubuntu:18.04
+      SUITE: default
+    - MOLECULE_DISTRO: ubuntu:16.04
+      SUITE: default
+    - MOLECULE_DISTRO: centos:8
+      SUITE: smb
+    - MOLECULE_DISTRO: ubuntu:20.04
+      SUITE: smb
+
+install:
+  # Install test dependencies.
+  - pip install molecule docker ansible-lint flake8 testinfra
+
+before_script:
+  - cd ../ && mv ansible-fileserver juju4.fileserver
+  - cd juju4.fileserver
+
+script:
+  - molecule test -s $SUITE
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
