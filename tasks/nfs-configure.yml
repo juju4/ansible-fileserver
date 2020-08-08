@@ -1,17 +1,21 @@
 ---
 
-- name: Remove localhost restriction in /etc/hosts.allow
-  lineinfile:
-    dest: "/etc/hosts.allow"
-    regexp: "^rpcbind "
-    line: "rpcbind mountd nfsd statd lockd rquotad : 127.0.0.1, {{ fileserver_portmap_subnet }}"
-    backup: yes
-- name: Ensures restriction in /etc/hosts.deny
-  lineinfile:
-    dest: "/etc/hosts.deny"
-    regexp: "^rpcbind "
-    line: "rpcbind mountd nfsd statd lockd rquotad : ALL"
-    backup: yes
+- block:
+    - name: Remove localhost restriction in /etc/hosts.allow
+      lineinfile:
+        dest: "/etc/hosts.allow"
+        regexp: "^rpcbind "
+        line: "rpcbind mountd nfsd statd lockd rquotad : 127.0.0.1, {{ fileserver_portmap_subnet }}"
+        backup: yes
+    - name: Ensures restriction in /etc/hosts.deny
+      lineinfile:
+        dest: "/etc/hosts.deny"
+        regexp: "^rpcbind "
+        line: "rpcbind mountd nfsd statd lockd rquotad : ALL"
+        backup: yes
+  when: ansible_os_family != "RedHat" or ansible_distribution_major_version|int <= 7
+- include: systemd.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int > 7
 
 - name: Configure NFS server
   lineinfile:

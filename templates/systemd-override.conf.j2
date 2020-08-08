@@ -1,0 +1,37 @@
+[Service]
+NoNewPrivileges=yes
+PrivateTmp=true
+PrivateDevices=yes
+ProtectHome=yes
+ProtectSystem=full
+{% if (ansible_os_family == 'RedHat' and ansible_distribution_major_version|int > 7) or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 18) %}
+InaccessiblePaths=/proc
+ProtectKernelTunables=true
+ProtectKernelModules=yes
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=~user mnt
+LockPersonality=true
+{% endif %}
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+          ansible_virtualization_type == "docker"
+        )
+%}
+{% if (ansible_os_family == 'RedHat' and ansible_distribution_major_version|int >= 8) or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 16) %}
+
+{% if (ansible_os_family == 'RedHat' and ansible_distribution_major_version|int >= 8) or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 18) %}
+#SystemCallFilter=~@debug @mount @cpu-emulation @obsolete @privileged
+SystemCallFilter=~@debug @mount @cpu-emulation @obsolete
+{% endif %}
+# When system call is disallowed, return error code instead of killing process
+SystemCallErrorNumber=EPERM
+{% endif %}
+{% endif %}
+{% if fileserver_cgroups_restriction_enable|bool %}
+CPUShares={{ fileserver_cgroups_cpushares | default('1024') }}
+CPUQuota={{ fileserver_cgroups_cpuquota | default('80%') }}
+MemoryLimit={{ fileserver_cgroups_memorylimit | default('4G') }}
+{% endif %}
+# https://fedoraproject.org/wiki/Changes/Deprecate_TCP_wrappers
+IPAddressAllow=127.0.0.1,::1,{{ fileserver_portmap_subnet }}
+IPAddressDeny=any
