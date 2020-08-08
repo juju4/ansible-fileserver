@@ -2,16 +2,16 @@
 
 - name: Ensure override folder exists
   file:
-    dest: /etc/systemd/system/squid.service.d
+    dest: /etc/systemd/system/nfs.service.d
     state: directory
     mode: '0755'
 
 # if issue, check /var/log/audit/audit.log
-- name: Review squid systemd options - RestartSec, Seccomp...
+- name: Review nfs systemd options - RestartSec, Seccomp...
   template:
     src: systemd-override.conf.j2
-    dest: /etc/systemd/system/squid.service.d/override.conf
+    dest: /etc/systemd/system/nfs.service.d/override.conf
     mode: '0644'
   notify:
     - reload systemd
-    - restart squid
+    - restart nfs
