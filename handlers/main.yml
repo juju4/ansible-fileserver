@@ -17,6 +17,12 @@
     ansible_os_family == "RedHat" and
     not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
 
+- name: restart nfs redhat
+  service: name=nfs state=restarted
+  when: >
+    ansible_os_family == "RedHat" and
+    not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
+
 - name: reload smbd
   service: name=smbd state=reloaded
   when: ansible_os_family == 'Debian'

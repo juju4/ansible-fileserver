@@ -14,4 +14,4 @@
     mode: '0644'
   notify:
     - reload systemd
-    - restart nfs
+    - restart nfs redhat
