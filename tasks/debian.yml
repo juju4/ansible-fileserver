@@ -13,12 +13,14 @@
 
 - block:
     - name: Debian | nfs file server packages install
-      apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
-      with_items:
+      apt:
+        name:
         - nfs-common
         - nfs-kernel-server
-    #    - portmap  ## replaced by rpcbind
         - rpcbind
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
       when: (servertype is defined and servertype == 'nfs')
 
     #- name: Debian | Remove localhost restriction
@@ -29,22 +31,30 @@
     #    - restart portmap
 
     - name: Ensure appropriate services are enabled
-      service: name="{{ item }}" state=started enabled=yes
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
       with_items:
         - rpcbind
         - nfs-kernel-server
+      when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
   when: (servertype is defined and servertype == 'nfs')
 
 ## https://wiki.debian.org/SambaServerSimple
 - block:
     - name: Debian | samba file server packages install
-      apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
-      with_items:
+      apt:
+        name:
         - samba
         - samba-common
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
     - name: Debian | Ensure services are running and enabled on boot.
-      service: name={{ item }} state=started enabled=yes
-      with_items:
-        - samba
+      service:
+        name: samba
+        state: started
+        enabled: yes
       ignore_errors: true
   when: (servertype is defined and servertype == 'smb')

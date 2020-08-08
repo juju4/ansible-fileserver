@@ -22,5 +22,12 @@
   with_items: "{{ fileserver_samba_users }}"
 
 - name: Create Samba Password for User(s)
-  shell: "(echo {{ item.pass }}; echo {{ item.pass }}) | smbpasswd -s -a {{ item.name }}"
+  shell: |
+    set -o pipefail
+    (echo {{ item.pass }}; echo {{ item.pass }}) | smbpasswd -s -a {{ item.name }}
+  args:
+    executable: /bin/bash
+  changed_when: false # FIXME!
   with_items: "{{ fileserver_samba_users }}"
+  register: new
+  failed_when: "'Failed to add entry for user' in new.stderr"
