@@ -1,7 +1,6 @@
 ---
 
 - hosts: all
-#- hosts: test-kitchen
   vars:
     - fileserver_samba_shares: []
   roles:
