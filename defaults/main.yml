@@ -21,3 +21,6 @@ fileserver_samba_shares:
 
 fileserver_samba_users:
     - { name: youruser, pass: yourpass_you_have_to_change }
+
+# rhel/centos8 only for now
+fileserver_cgroups_restriction_enable: true
