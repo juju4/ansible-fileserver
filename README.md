@@ -1,5 +1,5 @@
-[![Build Status - Master](https://travis-ci.org/juju4/ansible-fileserver.svg?branch=master)](https://travis-ci.org/juju4/ansible-fileserver)
-[![Build Status - Devel](https://travis-ci.org/juju4/ansible-fileserver.svg?branch=devel)](https://travis-ci.org/juju4/ansible-fileserver/branches)
+[![Build Status - Master](https://travis-ci.com/juju4/ansible-fileserver.svg?branch=master)](https://travis-ci.com/juju4/ansible-fileserver)
+[![Build Status - Devel](https://travis-ci.com/juju4/ansible-fileserver.svg?branch=devel)](https://travis-ci.com/juju4/ansible-fileserver/branches)
 # fileserver ansible role
 
 A simple ansible role to setup a file server either through nfs, either through samba
