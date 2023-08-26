@@ -1,3 +1,6 @@
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+# DEPRECATED/LOOKING FOR MAINTAINERS -> archived
+
 [![Build Status - Master](https://travis-ci.com/juju4/ansible-fileserver.svg?branch=master)](https://travis-ci.com/juju4/ansible-fileserver)
 [![Build Status - Devel](https://travis-ci.com/juju4/ansible-fileserver.svg?branch=devel)](https://travis-ci.com/juju4/ansible-fileserver/branches)
 # fileserver ansible role
